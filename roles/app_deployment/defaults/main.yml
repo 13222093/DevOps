@@ -1,0 +1,3 @@
+---
+web_root: /var/www/html
+index_html_content: "<h1>Automated by Ansible</h1><p>Deployment sukses di VM Ubuntu!</p>"

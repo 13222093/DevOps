@@ -1,0 +1,8 @@
+---
+- name: Configuration Management
+  hosts: all
+  become: yes
+  roles:
+    - common
+    - app_deployment
+    - service_management

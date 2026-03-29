@@ -1,0 +1,3 @@
+---
+backup_dir: /var/backup/staging
+index_html_content: "<h1>STAGING Server</h1><p>Testing before production</p>"

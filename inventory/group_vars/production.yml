@@ -1,0 +1,3 @@
+---
+backup_dir: /var/www/html/my_backup
+index_html_content: "<h1>PRODUCTION</h1><p>Live server!</p>"

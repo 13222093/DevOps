@@ -1,0 +1,17 @@
+version: '3'
+services:
+  dev:
+    build: .
+    container_name: ansible-dev
+    ports:
+      - "2221:22"
+  staging:
+    build: .
+    container_name: ansible-staging
+    ports:
+      - "2222:22"
+  production:
+    build: .
+    container_name: ansible-production
+    ports:
+      - "2223:22"

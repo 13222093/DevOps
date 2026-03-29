@@ -1,0 +1,6 @@
+---
+- name: Membuat folder backup di VM
+  ansible.builtin.file:
+    path: "{{ backup_dir }}"
+    state: directory
+    mode: '0755'

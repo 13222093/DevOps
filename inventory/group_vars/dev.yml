@@ -1,0 +1,3 @@
+---
+backup_dir: /tmp/backup
+index_html_content: "<h1>DEV Server</h1><p>Development environment</p>"

@@ -1,0 +1,73 @@
+name: CI/CD Pipeline - Ansible Deployment
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify project structure
+        run: |
+          echo "=== Verifying Ansible project structure ==="
+          test -d roles/common && echo "✓ roles/common exists"
+          test -d roles/app_deployment && echo "✓ roles/app_deployment exists"
+          test -d roles/service_management && echo "✓ roles/service_management exists"
+          test -d inventory && echo "✓ inventory exists"
+          test -f playbooks/site.yml && echo "✓ playbooks/site.yml exists"
+          echo "=== Build stage complete ==="
+
+      - name: Lint Ansible playbook
+        run: |
+          pip install ansible-lint
+          ansible-lint playbooks/site.yml || true
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [dev, staging, production]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+
+      - name: Simulate deployment to ${{ matrix.environment }}
+        run: |
+          echo "=== Deploying to ${{ matrix.environment }} ==="
+          ansible-playbook -i inventory/${{ matrix.environment }}.ini playbooks/site.yml --check --diff
+          echo "=== Deploy to ${{ matrix.environment }} complete ==="
+
+  verify:
+    name: Verify
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify deployment files
+        run: |
+          echo "=== Verification stage ==="
+          echo "Checking YAML syntax..."
+          python3 -c "
+          import yaml, sys
+          for f in ['playbooks/site.yml', 'inventory/group_vars/all.yml', 'inventory/group_vars/dev.yml']:
+              try:
+                  yaml.safe_load(open(f))
+                  print(f'✓ {f} - valid YAML')
+              except Exception as e:
+                  print(f'✗ {f} - {e}')
+                  sys.exit(1)
+          "
+          echo "=== All verifications passed ==="

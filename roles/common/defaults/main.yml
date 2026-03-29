@@ -1,2 +1,2 @@
 ---
-backup_dir: /var/www/html/my_backup
+common_backup_dir: /var/www/html/my_backup

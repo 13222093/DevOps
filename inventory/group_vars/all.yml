@@ -1,3 +1,3 @@
 ---
-service_name: nginx
-web_root: /var/www/html
+service_management_service_name: nginx
+app_deployment_web_root: /var/www/html

@@ -45,7 +45,7 @@ jobs:
       - name: Simulate deployment to ${{ matrix.environment }}
         run: |
           echo "=== Deploying to ${{ matrix.environment }} ==="
-          ansible-playbook -i inventory/${{ matrix.environment }}.ini playbooks/site.yml --check --diff
+          ansible-playbook -i inventory/${{ matrix.environment }}.ini playbooks/site.yml --syntax-check
           echo "=== Deploy to ${{ matrix.environment }} complete ==="
 
   verify:

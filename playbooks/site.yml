@@ -1,7 +1,7 @@
 ---
 - name: Configuration Management
   hosts: all
-  become: yes
+  become: true
   roles:
     - common
     - app_deployment

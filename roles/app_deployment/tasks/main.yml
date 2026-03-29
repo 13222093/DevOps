@@ -1,5 +1,6 @@
 ---
 - name: Mengupdate halaman utama Nginx
   ansible.builtin.copy:
-    content: "{{ index_html_content }}"
-    dest: "{{ web_root }}/index.html"
+    content: "{{ app_deployment_index_html_content }}"
+    dest: "{{ app_deployment_web_root }}/index.html"
+    mode: "0644"

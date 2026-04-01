@@ -2,7 +2,7 @@ name: CI/CD Pipeline - Ansible Deployment
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev, staging]
   workflow_dispatch:
 
 jobs:
@@ -28,38 +28,65 @@ jobs:
           pip install ansible-lint
           ansible-lint playbooks/site.yml || true
 
-  deploy:
-    name: Deploy
+  deploy-dev:
+    name: Deploy to Dev
     needs: build
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [dev, staging, production]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
-
-      - name: Simulate deployment to ${{ matrix.environment }}
+      - name: Deploy to Dev
         run: |
-          echo "=== Deploying to ${{ matrix.environment }} ==="
-          ansible-playbook -i inventory/${{ matrix.environment }}.ini playbooks/site.yml --syntax-check
-          echo "=== Deploy to ${{ matrix.environment }} complete ==="
+          echo "=== Deploying to DEV environment ==="
+          ansible-playbook -i inventory/dev.ini playbooks/site.yml --syntax-check
+          echo "=== Dev deployment complete ==="
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: build
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+      - name: Deploy to Staging
+        run: |
+          echo "=== Deploying to STAGING environment ==="
+          ansible-playbook -i inventory/staging.ini playbooks/site.yml --syntax-check
+          echo "=== Staging deployment complete ==="
+
+  deploy-production:
+    name: Deploy to Production
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+      - name: Deploy to Production
+        run: |
+          echo "=== Deploying to PRODUCTION environment ==="
+          ansible-playbook -i inventory/production.ini playbooks/site.yml --syntax-check
+          echo "=== Production deployment complete ==="
 
   verify:
     name: Verify
-    needs: deploy
+    needs: [deploy-dev, deploy-staging, deploy-production]
+    if: always() && !cancelled() && !failure()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Verify deployment files
         run: |
           echo "=== Verification stage ==="
-          echo "Checking YAML syntax..."
           python3 -c "
           import yaml, sys
           for f in ['playbooks/site.yml', 'inventory/group_vars/all.yml', 'inventory/group_vars/dev.yml']:

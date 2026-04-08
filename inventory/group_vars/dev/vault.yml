@@ -1,0 +1,7 @@
+---
+# Encrypt this file with: ansible-vault encrypt inventory/group_vars/dev/vault.yml
+# Example:
+#   ansible_password: "your-secure-dev-password-here"
+#   dev_api_key: "your-dev-api-key-here"
+
+ansible_password: "CHANGE_ME_dev_password"

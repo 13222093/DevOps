@@ -1,0 +1,6 @@
+---
+# Encrypt this file with: ansible-vault encrypt inventory/group_vars/staging/vault.yml
+# Example:
+#   ansible_password: "your-secure-staging-password-here"
+
+ansible_password: "CHANGE_ME_staging_password"

@@ -1,17 +1,26 @@
 version: '3'
 services:
   dev:
-    build: .
+    build:
+      context: .
+      args:
+        SSH_PASSWORD: ${SSH_PASSWORD:-ansible}
     container_name: ansible-dev
     ports:
       - "2221:22"
   staging:
-    build: .
+    build:
+      context: .
+      args:
+        SSH_PASSWORD: ${SSH_PASSWORD:-ansible}
     container_name: ansible-staging
     ports:
       - "2222:22"
   production:
-    build: .
+    build:
+      context: .
+      args:
+        SSH_PASSWORD: ${SSH_PASSWORD:-ansible}
     container_name: ansible-production
     ports:
       - "2223:22"

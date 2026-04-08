@@ -1,0 +1,6 @@
+---
+# Encrypt this file with: ansible-vault encrypt inventory/group_vars/production/vault.yml
+# CRITICAL: Change this immediately and encrypt!
+#   ansible_password: "your-secure-prod-password-here"
+
+ansible_password: "CHANGE_ME_prod_password"

@@ -1,3 +1,8 @@
 ---
 service_management_service_name: nginx
 app_deployment_web_root: /var/www/html
+
+# SSH Authentication
+# Use ansible_password from vault or SSH key-based auth
+# Never hardcode passwords in inventory files
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

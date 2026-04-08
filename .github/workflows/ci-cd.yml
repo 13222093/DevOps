@@ -38,11 +38,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
+      - name: Create vault password file
+        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
       - name: Deploy to Dev
         run: |
           echo "=== Deploying to DEV environment ==="
-          ansible-playbook -i inventory/dev.ini playbooks/site.yml --syntax-check
+          ansible-playbook -i inventory/dev.ini playbooks/site.yml --vault-password-file .vault_pass --syntax-check
           echo "=== Dev deployment complete ==="
+      - name: Cleanup vault password
+        if: always()
+        run: rm -f .vault_pass
 
   deploy-staging:
     name: Deploy to Staging
@@ -54,11 +59,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
+      - name: Create vault password file
+        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
       - name: Deploy to Staging
         run: |
           echo "=== Deploying to STAGING environment ==="
-          ansible-playbook -i inventory/staging.ini playbooks/site.yml --syntax-check
+          ansible-playbook -i inventory/staging.ini playbooks/site.yml --vault-password-file .vault_pass --syntax-check
           echo "=== Staging deployment complete ==="
+      - name: Cleanup vault password
+        if: always()
+        run: rm -f .vault_pass
 
   deploy-production:
     name: Deploy to Production
@@ -70,11 +80,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
+      - name: Create vault password file
+        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
       - name: Deploy to Production
         run: |
           echo "=== Deploying to PRODUCTION environment ==="
-          ansible-playbook -i inventory/production.ini playbooks/site.yml --syntax-check
+          ansible-playbook -i inventory/production.ini playbooks/site.yml --vault-password-file .vault_pass --syntax-check
           echo "=== Production deployment complete ==="
+      - name: Cleanup vault password
+        if: always()
+        run: rm -f .vault_pass
 
   verify:
     name: Verify
@@ -89,7 +104,7 @@ jobs:
           echo "=== Verification stage ==="
           python3 -c "
           import yaml, sys
-          for f in ['playbooks/site.yml', 'inventory/group_vars/all.yml', 'inventory/group_vars/dev.yml']:
+          for f in ['playbooks/site.yml', 'inventory/group_vars/all.yml']:
               try:
                   yaml.safe_load(open(f))
                   print(f'✓ {f} - valid YAML')

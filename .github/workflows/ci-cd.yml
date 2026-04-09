@@ -39,7 +39,7 @@ jobs:
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
       - name: Create vault password file
-        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
+        run: printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
       - name: Deploy to Dev
         run: |
           echo "=== Deploying to DEV environment ==="
@@ -60,7 +60,7 @@ jobs:
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
       - name: Create vault password file
-        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
+        run: printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
       - name: Deploy to Staging
         run: |
           echo "=== Deploying to STAGING environment ==="
@@ -81,7 +81,7 @@ jobs:
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
       - name: Create vault password file
-        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
+        run: printf '%s' "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass
       - name: Deploy to Production
         run: |
           echo "=== Deploying to PRODUCTION environment ==="

@@ -1,0 +1,24 @@
+# CODEOWNERS - defines who must review changes to specific paths
+
+# Global fallback
+* @13222093
+
+# Production - strict ownership
+/inventory/production/ @13222093
+/inventory/production.ini @13222093
+
+# CI/CD workflows
+/.github/ @13222093
+
+# Ansible core
+/ansible.cfg @13222093
+/playbooks/ @13222093
+/roles/ @13222093
+
+# Security-sensitive
+/Dockerfile @13222093
+/docker-compose.yml @13222093
+/.gitignore @13222093
+
+# Deployment scripts
+/scripts/ @13222093

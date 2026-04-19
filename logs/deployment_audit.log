@@ -1,0 +1,7 @@
+[2026-04-10 22:46:29] DEPLOYER=ariaziz ENV=dev STATUS=APPROVED MSG="Auto-approved for dev"
+[2026-04-10 22:46:29] DEPLOYER=ariaziz ENV=batman STATUS=REJECTED MSG="Invalid environment"
+[2026-04-10 22:46:29] DEPLOYER=ariaziz ENV=staging STATUS=APPROVED MSG="Confirmed by ariaziz"
+[2026-04-10 22:46:39] DEPLOYER=ariaziz ENV=production STATUS=APPROVED MSG="Manually confirmed by ariaziz"
+[2026-04-10 23:00:01] DEPLOYER=ariaziz ENV=invalid_env STATUS=REJECTED MSG="Invalid environment"
+[2026-04-10 23:00:04] DEPLOYER=ariaziz ENV=production STATUS=REJECTED MSG="Confirmation failed by ariaziz"
+[2026-04-10 23:00:01] DEPLOYER=ariaziz ENV=production STATUS=ALERT_SIM MSG="Simulated unauthorized production deploy attempt"

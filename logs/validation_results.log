@@ -1,0 +1,2 @@
+[2026-04-10 23:00:01] ENV=dev CHECK=SSH Port STATUS=PASS DETAIL="Port 2221 is open and accepting connections"
+[2026-04-10 23:00:03] ENV=dev CHECK=SSH Port STATUS=FAIL DETAIL="Port 2221 is not reachable"
